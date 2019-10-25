@@ -16,30 +16,29 @@ function Cat(name, age) {
 }
 
 
-
 function extend(child, parent) {
-  child.prototype = parent.prototype;
-  return child;
+  function F() {};
+  F.prototype = parent.prototype;
+  var prototype = new F();
+  prototype.constructor = child;
+  child.prototype = prototype;
+  child.super = parent.prototype;
 }
 
-Cat = extend(Cat, Animal)
-
-
-Cat.prototype.sayName1 = function(){
-  console.log('I am a cat');
-  this.sayName();
+ extend(Cat, Animal)
+Cat.prototype.sayName = function() {
+  console.log("I am a cat");
+  Cat.super.sayName.call(this);
 }
-
 
 let myCat = new Cat('花花', 13);
-myCat.sayName1();
+myCat.sayName();
 myCat.sayAge();
 
 let myDog = new Animal('傻狗', 1);
                        
 myDog.sayName();
 myDog.sayAge();
-
 
 
 
