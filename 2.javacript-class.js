@@ -8,7 +8,7 @@ class Animal {
     console.log('I am ' + this.name);
   }
   sayAge() {
-    console.log('I am ' + this.age + 'years old');
+    console.log('I am ' + this.age + ' years old');
   }
 }
 
