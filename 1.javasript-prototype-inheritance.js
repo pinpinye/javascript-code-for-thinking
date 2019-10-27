@@ -54,21 +54,27 @@ myDog.sayName();
 myDog.sayAge();
 
 // 模拟new 操作符做的事情
-let creatChild = function(name, age) {
+let creatChild = function(Parent) {
+  if(typeof Parent !== 'function') {
+    throw new Error('the first params of createChild should be a function')
+  }
   let child = {};
-  Cat.call(child,name,age); // 1. 调用指定父级的构造函数 
-  Object.setPrototypeOf(child, Cat.prototype); // 2. 添加一个__prtoto__指针指向指定父级的原型，setPrototypeOf 相当于 child.__prtoto__  = parent.ptototype
+  Object.setPrototypeOf(child, Parent.prototype); // 1. 添加一个__prtoto__指针指向指定父级的原型，其本质是 child.__prtoto__  = parent.ptototype
+  Parent.apply(Parent, Array.prototype.slice(arguments,1)); // 2. 调用指定父级的构造函数 
   return child;
 }
 
 // 模拟new 操作符做的事情
-let creatChild1 = function(name, age) {
-  let child = Object.create(Cat.prototype); // 1.添加一个__prtoto__指针指向指定父级的原型
-  Cat.call(child,name,age); // 2. 调用指定父级的构造函数
+let creatChild1 = function(Parent) {
+  if(typeof Parent !== 'function') {
+    throw new Error('the first params of createChild should be a function')
+  }
+  let child = Object.create(Parent.prototype); // 1.添加一个__prtoto__指针指向指定父级的原型, 其本质是child.__proto__ = Parent.prototype
+  Parent.apply(child, Array.prototype.slice(arguments,1)); // 2. 调用指定父级的构造函数
   return child;
 }
 
-let myCat1 = creatChild('小花花', 12);  
+let myCat1 = creatChild(Cat, '小花花', 12);  
 myCat1.sayName();
 myCat1.sayAge();
 console.log(myCat1 instanceof Animal); // 打印出true
