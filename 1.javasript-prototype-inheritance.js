@@ -1,6 +1,11 @@
 function Animal(name, age){
-  this.name = name;
-  this.age = age;
+    // 确定构造函数必须由new调用
+  // if (new.target !== undefined) {
+    this.name = name;
+    this.age = age;
+  // } else {
+  //  throw new Error('必须使用 new 命令生成实例');
+  //}
 }
 
 Animal.prototype.sayName = function(){
@@ -12,6 +17,7 @@ Animal.prototype.sayAge = function(){
 }
 
 function Cat(name, age) {
+
   Animal.call(this, name, age);
 }
 
