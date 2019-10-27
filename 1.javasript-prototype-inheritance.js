@@ -17,8 +17,12 @@ Animal.prototype.sayAge = function(){
 }
 
 function Cat(name, age) {
-
-  Animal.call(this, name, age);
+  // 限制构造函数必须由new调用，
+  // if (new.target !== undefined) {
+  	Animal.call(this, name, age);
+  // } else {
+  //  throw new Error('必须使用 new 命令生成实例');
+  // }
 }
 
 // 道格拉斯，克罗克福德在prototypal inheritance in javascript一文中提出基于已有的的对象创建新对象 
