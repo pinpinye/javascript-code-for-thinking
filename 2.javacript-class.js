@@ -1,6 +1,10 @@
 
 class Animal {
   constructor(name, age) {
+    // 如果Animal不能独立使用、必须继承后才能使用的类 可以使用new.target判断
+    if (new.target === Animal) {   
+      throw new Error('本类不能实例化');
+    }
     this.name = name;
     this.age = age;
   }
