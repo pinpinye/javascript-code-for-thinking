@@ -64,33 +64,91 @@ inner2(); // 这2个闭包的调用不会相互影响，虽然函数的词法作
 // 闭包特点3 闭包将产生新的函数作用域
 
 
-// 闭包在循环中被创建，但他们共享了同一个词法作用域，在这个作用域中存在一个变量item。
-// 这是因为变量item使用var进行声明，由于变量提升，所以具有函数作用域。
-// 当onfocus的回调执行时，item.help的值被决定。由于循环在事件触发之前早已执行完毕，变量对象item（被三个闭包所共享）已经指向了helpText的最后一项。
-
-function showHelp(help) {
-  document.getElementById('help').innerHTML = help;
+// 闭包在循环中被创建，但他们共享了同一个词法作用域，在这个作用域中存在一个变量c。
+// 这是因为变量c使用var进行声明，由于变量提升，所以具有函数作用域。
+// 当res里面保存的函数执行时，c的值被决定。由于循环在事件触发之前早已执行完毕，变量对象c等于10。
+function outer2() {
+  let res = [];
+  let a = 0;
+  for(var i = 0 ; i < 10 ; i++) {
+    a++;
+    var c = a;
+    res[i] = function() {
+      console.log(c);
+    };
+  }
+  return res;
 }
 
-function setupHelp() {
-  var helpText = [
-      {'id': 'email', 'help': 'Your e-mail address'},
-      {'id': 'name', 'help': 'Your full name'},
-      {'id': 'age', 'help': 'Your age (you must be over 16)'}
-    ];
 
-  for (var i = 0; i < helpText.length; i++) {
-    var item = helpText[i];
-    document.getElementById(item.id).onfocus = function() {
-      showHelp(item.help);
-    }
+let res21 = outer2();
+
+res21[0]();res21[1]();res21[2]();
+
+
+
+
+
+// 使用闭包1： 使用匿名闭包立即执行 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closure
+function outer4() {
+  let res = [];
+  let a = 0;
+  for(var i = 0 ; i < 10 ; i++) {
+    a++;
+    var c = a;
+    res[i] = function() {
+      return c;
+    }();
+  }
+  return res;
+}
+
+
+let res41 = outer4();
+
+console.log(res41);
+
+// 使用闭包2： 使用新的函数创建新的词法作用域
+
+function outer5() {
+  let res = [];
+  let a = 0;
+  for(var i = 0 ; i < 10 ; i++) {
+    a++;
+    var c = a;
+    res[i] = showNum(c);
+  }
+  return res;
+}
+
+function showNum(num) {
+  return function() {
+    console.log(num);
   }
 }
 
-setupHelp(); 
+let res51 = outer5();
 
-// 使用闭包1： 使用新的函数创建新的词法作用域
-
-// 使用闭包2： 使用匿名闭包立即执行 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closure
+res51[0]();res51[1]();res51[2]();
 
 // 由于性能问题应减少闭包的使用，使用let创建块级作用域，绑定了块作用域的变量，这意味着不再需要额外的闭包
+
+function outer3() {
+  let res = [];
+  let a = 0;
+  for(var i = 0 ; i < 10 ; i++) {
+    a++;
+    let c = a;
+    res[i] = function() {
+      console.log(c);
+    };
+  }
+  return res;
+}
+
+
+let res31 = outer3();
+
+res31[0]();res31[1]();res31[2]();
+
+
