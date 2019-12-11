@@ -41,6 +41,7 @@ function extend(child, parent) {
 // 在ES6中，这里封装的extend方法可以用 Object.setPrototypeOf(Cat.prototype, Animal.prototype)直接设置原型替代;
 // 直接使用setPrototypeOf修改原型会动态影响到访问任何[[Prototype]]已被更改的对象的代码；
 // 如果考虑性能问题，那么应使用Object.create， child.prototype = Object.create(parent.prototype)。
+// 由于Object.create是新创建的对象，不存在更改已存在的对象的原型的问题
 extend(Cat, Animal);
 
 // 不仅继承父类的同名方法。还可以实现子类定制的同名方法
