@@ -1,3 +1,4 @@
+// 深拷贝：http://objcer.com/2017/02/27/Dive-into-shallow-and-deep-clone-in-JavaScript/
 // https://stackoverflow.com/questions/2800964/benefits-of-prototypal-inheritance-over-classical/16872315#16872315
 // 1. constructor不是实例的属性，当你创建函数时，JS会为这个函数自动添加prototype属性，它的值是一个有 constructor 属性的对象，不是空对象。
 // 一旦原型prototype被改写，constructor也会被改写
@@ -147,3 +148,24 @@ o = Object.create({}, { p: { value: 42 } })
 // 省略了的属性特性默认为false,所以属性p是不可写,不可枚举,不可配置的:
 o.p = 24
 o.p  //42
+
+// 7. 原型链污染
+// https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html
+// foo是一个简单的JavaScript对象
+let foo = {bar: 1}
+
+// foo.bar 此时为1
+console.log(foo.bar) 
+
+// 修改foo的原型（即Object）
+foo.__proto__.bar = 2
+
+// 由于查找顺序的原因，foo.bar仍然是1, 查找机制先查找到foo自己的属性bar
+console.log(foo.bar)
+
+// 此时再用Object创建一个空的zoo对象
+let zoo = {}
+// 查看zoo.bar
+console.log(zoo.bar) //2
+
+
