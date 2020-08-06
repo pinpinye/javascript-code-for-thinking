@@ -77,6 +77,21 @@ c.copy1.a1.b ===  c.b //true
 let dd = deepClone(c) 
 dd.copy1.a1.b === dd.b // false 不考虑同级引用会变成false
 
+// 不考虑同级引用
+function clone (value) {
+  if (Array.isArray(value)) {
+    return value.map(clone)
+  } else if (value && typeof value === 'object') {
+    const res = {}
+    for (const key in value) {
+      res[key] = clone(value[key])
+    }
+    return res
+  } else {
+    return value
+  }
+}
+
 // --------------------------以下考虑同级引用--------------------------------------------------------
 // 将源对象中的所有对象保存起来
 function deepClone1(o, existObj) {
@@ -101,19 +116,7 @@ function deepClone1(o, existObj) {
     return o
 }
 // type 3
-function clone (value) {
-  if (Array.isArray(value)) {
-    return value.map(clone)
-  } else if (value && typeof value === 'object') {
-    const res = {}
-    for (const key in value) {
-      res[key] = clone(value[key])
-    }
-    return res
-  } else {
-    return value
-  }
-}
+
 
 // -------------------测试用例-----------------------------
  c = {
