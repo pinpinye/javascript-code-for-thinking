@@ -100,6 +100,21 @@ function deepClone1(o, existObj) {
   }
     return o
 }
+// type 3
+function clone (value) {
+  if (Array.isArray(value)) {
+    return value.map(clone)
+  } else if (value && typeof value === 'object') {
+    const res = {}
+    for (const key in value) {
+      res[key] = clone(value[key])
+    }
+    return res
+  } else {
+    return value
+  }
+}
+
 // -------------------测试用例-----------------------------
  c = {
   a:1,
